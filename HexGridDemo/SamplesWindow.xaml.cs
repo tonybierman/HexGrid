@@ -18,8 +18,10 @@ namespace HexGridDemo
             Board.ItemsSource =
                 Enumerable.Range(0, Board.RowCount)
                     .SelectMany(r => Enumerable.Range(0, Board.ColumnCount)
-                        .Select(c => new IntPoint(c, r)))
+                    .Select(c => new IntPoint(c, r)))
                     .ToList();
+
+            
         }
 
         private void MenuClick(object sender, RoutedEventArgs e)
