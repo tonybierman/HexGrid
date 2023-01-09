@@ -1,4 +1,6 @@
-﻿using HexGridHelpers;
+﻿using HexBoard.Models;
+using HexBoard.ViewModels;
+using HexGridHelpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,14 +27,18 @@ namespace HexBoard
         public MainWindow()
         {
             InitializeComponent();
-            Board.ItemsSource =
-                Enumerable.Range(0, Board.RowCount)
-                    .SelectMany(r => Enumerable.Range(0, Board.ColumnCount)
-                    .Select(c => new IntPoint(c, r)))
-                    .ToList();
+
+            HexGameboardViewModel vm = new HexGameboardViewModel(Board.ColumnCount, Board.RowCount);
+
+            DataContext = vm;
+
+            Board.ItemsSource = vm.Grid;
 
             Board.SelectedIndex = 0;
             Board.SelectionChanged += Board_SelectionChanged;
+
+            //HexGameboardViewModel ds = new HexGameboardViewModel();
+            //Board.ItemsSource = ds.Terrain.Terrain;
         }
 
         private void Board_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -40,7 +46,7 @@ namespace HexBoard
             IntPoint? previous = e.RemovedItems.Count > 0 ? (IntPoint?)e.RemovedItems[0] : null;
             IntPoint? next = e.AddedItems.Count > 0 ? (IntPoint?)e.AddedItems[0] : null;
 
-            if(previous != null && next != null)
+            if (previous != null && next != null)
             {
                 HexArrayHelper hah = new HexArrayHelper();
                 if (hah.IsNeigbour(next.Value, new IntSize(8, 6), previous.Value) == true)
