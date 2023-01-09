@@ -18,6 +18,17 @@ namespace HexBoard.ViewModels
                      .SelectMany(r => Enumerable.Range(0, cc)
                      .Select(c => new TerrainPoint(c, r)))
                      .ToList();
+
+            foreach(var g in Grid)
+            {
+                g.Terrain = TerrainType.Plains;
+
+                if (g.Point?.X == 4)
+                    g.Terrain = TerrainType.ShallowWater;
+            
+            }
+
+            
         }
     }
 }

@@ -43,13 +43,13 @@ namespace HexBoard
 
         private void Board_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            IntPoint? previous = e.RemovedItems.Count > 0 ? (IntPoint?)e.RemovedItems[0] : null;
-            IntPoint? next = e.AddedItems.Count > 0 ? (IntPoint?)e.AddedItems[0] : null;
+            TerrainPoint? previous = e.RemovedItems.Count > 0 ? (TerrainPoint?)e.RemovedItems[0] : null;
+            TerrainPoint? next = e.AddedItems.Count > 0 ? (TerrainPoint?)e.AddedItems[0] : null;
 
             if (previous != null && next != null)
             {
                 HexArrayHelper hah = new HexArrayHelper();
-                if (hah.IsNeigbour(next.Value, new IntSize(8, 6), previous.Value) == true)
+                if (hah.IsNeigbour(next.Point.Value, new IntSize(8, 6), previous.Point.Value) == true)
                 {
                     Debug.WriteLine("Is neighbor");
                 }

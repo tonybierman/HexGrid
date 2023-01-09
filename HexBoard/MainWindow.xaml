@@ -4,17 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HexBoard"
-            xmlns:hx="clr-namespace:HexGridControl;assembly=HexGridControl"        
-            xmlns:vm="clr-namespace:HexGridHelpers;assembly=HexGridHelpers"
+        xmlns:hx="clr-namespace:HexGridControl;assembly=HexGridControl"        
+        xmlns:vm="clr-namespace:HexGridHelpers;assembly=HexGridHelpers"
+        xmlns:conv="clr-namespace:HexBoard.Converters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="440" Width="480">
+        Title="MainWindow" Height="640" Width="560">
+    <Window.Resources>
+        <conv:TerrainBackgroundConverter x:Key="convertTerrain" />
+    </Window.Resources>
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <hx:HexList Grid.Row="1" Name="Board" 
                         Margin="5"
-                        RowCount="6" ColumnCount="8"
+                        RowCount="9" ColumnCount="9"
                         Orientation="{Binding Path=SelectedItem, ElementName=BoardOrientation}">
             <hx:HexList.ItemContainerStyle>
                 <Style TargetType="{x:Type hx:HexItem}">
@@ -22,14 +26,14 @@
                     <Setter Property="Grid.Column" Value="{Binding Path=Point.X}"/>
                     <Setter Property="BorderThickness" Value="1.5"/>
                     <Setter Property="FontSize" Value="16"/>
-                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Background" Value="{Binding Path=Terrain, Converter={StaticResource convertTerrain}}"/>
                 </Style>
             </hx:HexList.ItemContainerStyle>
             <hx:HexList.ItemTemplate>
                 <DataTemplate>
                     <TextBlock>                                
                             <!--<Run Text="{Binding Path=Point.Y, Mode=OneWay}"/>-->
-                            <Run Text="{Binding Path=Terrain}"/>
+                            <!--<Run Text="{Binding Path=Terrain}"/>-->
                             <!--<Run Text="{Binding Path=Point.X, Mode=OneWay}"/>-->
                     </TextBlock>
                 </DataTemplate>

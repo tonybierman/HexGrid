@@ -10,7 +10,7 @@ namespace HexBoard.Models
 {
     public class TerrainPoint
     {
-        public IntPoint Point { get; set; }
+        public IntPoint? Point { get; set; }
 
         public TerrainType Terrain { get; set; }
 
