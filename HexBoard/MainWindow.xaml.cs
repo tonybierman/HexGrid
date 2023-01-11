@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace HexBoard
 {
@@ -37,8 +38,26 @@ namespace HexBoard
             Board.SelectedIndex = 0;
             Board.SelectionChanged += Board_SelectionChanged;
 
+            vm.PropertyChanged += Vm_PropertyChanged;
+
             //HexGameboardViewModel ds = new HexGameboardViewModel();
             //Board.ItemsSource = ds.Terrain.Terrain;
+        }
+
+        private void Vm_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if(sender != null)
+            {
+                HexGameboardViewModel vm = (HexGameboardViewModel)sender;
+                DataContext = vm;
+
+                Board.ItemsSource = vm.Grid;
+            }
+
+            //this.Dispatcher.BeginInvoke(DispatcherPriority.Background, () => {
+                
+
+            //    });
         }
 
         private void Board_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -49,16 +68,24 @@ namespace HexBoard
             if (previous != null && next != null)
             {
                 HexArrayHelper hah = new HexArrayHelper();
-                if (hah.IsNeigbour(next.Point.Value, new IntSize(8, 6), previous.Point.Value) == true)
+                HexGameboardViewModel vm = (HexGameboardViewModel)DataContext;
+                if (vm != null)
                 {
-                    Debug.WriteLine("Is neighbor");
+                    vm.ChangeTerrain(next, TerrainType.ShallowWater);
                 }
-                else
-                {
-                    Board.SelectionChanged -= Board_SelectionChanged;
-                    Board.SelectedItem = previous;
-                    Board.SelectionChanged += Board_SelectionChanged;
-                }
+
+                //Board.InvalidateVisual();
+                // This login constrains selection to a neighbor
+                //if (hah.IsNeigbour(next.Point.Value, new IntSize(8, 6), previous.Point.Value) == true)
+                //{
+                //    Debug.WriteLine("Is neighbor");
+                //}
+                //else
+                //{
+                //    Board.SelectionChanged -= Board_SelectionChanged;
+                //    Board.SelectedItem = previous;
+                //    Board.SelectionChanged += Board_SelectionChanged;
+                //}
             }
         }
     }
